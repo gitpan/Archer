@@ -1,0 +1,43 @@
+--- 
+abstract: yet another deployment tool
+author: 
+  - Tokuhiro Matsuno and Archer committers.
+distribution_type: module
+generated_by: Module::Install version 0.68
+license: unknown
+meta-spec: 
+  url: http://module-build.sourceforge.net/META-spec-v1.3.html
+  version: 1.3
+name: Archer
+no_index: 
+  directory: 
+    - inc
+    - t
+recommends: 
+  File::Rsync: 0
+  MySQL::Diff: 0
+  SVN::Agent: 0
+requires: 
+  Carp: 0
+  File::HomeDir: 0
+  File::Spec: 0
+  File::Util: 0
+  FindBin: 0
+  Getopt::Long: 0
+  IO::Prompt: 0
+  Kwalify: 0
+  List::MoreUtils: 0
+  Module::Build: 0
+  Net::SSH: 0
+  Parallel::ForkManager: 0
+  Path::Class: 0
+  Pod::Usage: 0
+  Storable: 0
+  String::CamelCase: 0
+  Template: 0
+  Term::ANSIColor: 0
+  Term::ReadLine: 0
+  Test::More: 0
+  UNIVERSAL::require: 0
+  YAML: 0
+version: 0.02
