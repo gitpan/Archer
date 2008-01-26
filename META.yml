@@ -1,9 +1,8 @@
 --- 
 abstract: yet another deployment tool
-author: 
-  - Tokuhiro Matsuno and Archer committers.
+author: Tokuhiro Matsuno and Archer committers.
 distribution_type: module
-generated_by: Module::Install version 0.68
+generated_by: Module::Install version 0.65
 license: unknown
 meta-spec: 
   url: http://module-build.sourceforge.net/META-spec-v1.3.html
@@ -40,4 +39,4 @@ requires:
   Test::More: 0
   UNIVERSAL::require: 0
   YAML: 0
-version: 0.03
+version: 0.04
