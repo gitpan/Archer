@@ -1,12 +1,13 @@
 package Archer;
 use strict;
 use warnings;
+use 5.008001;
 use Carp;
 use List::MoreUtils qw/uniq/;
 use Archer::ConfigLoader;
 use UNIVERSAL::require;
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 my $context;
 sub context { $context }
@@ -24,7 +25,12 @@ sub new {
         my $config_loader = Archer::ConfigLoader->new;
         $self->{ config } = $config_loader->load( $opts->{ config_yaml }, $self );
     }
-    $self->{ config }->{ global }->{ log } ||= { level => 'debug' };
+
+    if ( $self->{ log_level } ) {
+        $self->{ config }->{ global }->{ log } = { level => $self->{ log_level } };
+    } else {
+        $self->{ config }->{ global }->{ log } ||= { level => 'debug' };
+    }
 
     Archer->set_context( $self );
 
@@ -39,7 +45,7 @@ sub run {
         # TODO: role support
         require Archer::Shell;
         my @servers
-            = map { @{ $_ } }
+            = uniq map { @{ $_ } }
             values
             %{ $context->{ config }->{ projects }->{ $self->{ project } } };
         my $shell = Archer::Shell->new(
@@ -70,24 +76,42 @@ sub run_hook {
     $args ||= {};
 
     $self->log( 'info' => "run hook $hook" );
+    TASK:
     for my $plugin ( @{ $self->{ config }->{ tasks }->{ $hook } } ) {
         if ( $self->{ skips }->{ $plugin->{ name } } ) {
             $self->log( info => "skipped: $plugin->{name}" );
             next;
         }
 
-        if ( $plugin->{ role } && $plugin->{ role } ne $args->{ role } ) {
-            $self->log( debug =>
-                    "skip $args->{server}. because $plugin->{role} ne $args->{role}"
-            );
-            next;
+        if ( $hook eq 'process' && $self->{ only } ) {
+            if ( $self->{only} ne $plugin->{ name } ) {
+                $self->log( debug => "skipped: $plugin->{name}" );
+                next;
+            }
+        } else {
+            if ( $plugin->{skip_default} && ! $self->{ withs }->{ $plugin->{ name } } ) {
+                next;
+            }
+        }
+
+        for my $filter ( qw/ role project / ) {
+          if ( $plugin->{ $filter } && $plugin->{ $filter } ne $args->{ $filter } ) {
+              $self->log( info =>
+                      "skip $args->{server}. because $plugin->{$filter} ne $args->{$filter}"
+              );
+              next TASK;
+          }
         }
 
         my $class = ($plugin->{module} =~ /^\+(.+)$/) ? $1 : "Archer::Plugin::$plugin->{module}";
         $self->log( 'debug' => "load $class" );
         $class->use or die $@;
 
-        $self->log( 'info' => "run $class" );
+        if ( $args->{server} ) {
+            $self->log( 'info' => "run @{[ $plugin->{name} ]} ( $class ) to @{[ $args->{server} ]}" );
+        } else {
+            $self->log( 'info' => "run @{[ $plugin->{name} ]} ( $class )" );
+        }
         $class->new(
             {   config  => $plugin->{ config },
                 project => $self->{ project },
@@ -184,11 +208,20 @@ This is yet another deployment tool :)
 
 =head1 AUTHORS
 
-Tokuhiro Matsuno and Archer committers.
+Tokuhiro Matsuno and Archer comitters.
 
 =head1 TODO
 
 =head1 SEE ALSO
 
 L<capistrano>
+
+=head1 LICENSE
+
+Copyright (C) Tokuhiro Matsuno
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+=cut
 

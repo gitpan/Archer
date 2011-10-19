@@ -20,8 +20,11 @@ Getopt::Long::GetOptions(
     '--para=i'       => \$fork_num,
     '--dry-run'      => \my $dry_run_fg,
     '--skip=s'       => \my $skips,
+    '--with=s'       => \my $withs,
+    '--only=s'       => \my $only,
     '--shell',       => \my $shell,
     '--man'          => \my $man,
+    '+--log_level=s'  => \my $log_level,
     '--config=s'     => \$config,
     '--write-config' => \my $wc,
 ) or pod2usage( 2 );
@@ -41,6 +44,9 @@ if ( !@ARGV ) {
                 dry_run_fg   => $dry_run_fg,
                 parallel_num => $fork_num,
                 skips => +{ map { $_ => 1 } split /,/, ( $skips || '' ) },
+                withs => +{ map { $_ => 1 } split /,/, ( $withs || '' ) },
+                only        => $only,
+                log_level   => $log_level,
                 config_yaml => $config,
                 argv_str    => $argv_str,
                 shell       => $shell,
@@ -67,6 +73,9 @@ for my $proj ( @ARGV ) {
             dry_run_fg   => $dry_run_fg,
             parallel_num => $fork_num,
             skips        => +{ map { $_ => 1 } split /,/, ( $skips || '' ) },
+            withs        => +{ map { $_ => 1 } split /,/, ( $withs || '' ) },
+            only         => $only,
+            log_level    => $log_level,
             config_yaml  => $config,
             argv_str     => $argv_str,
             shell        => $shell,
@@ -82,12 +91,15 @@ __END__
     $ archer.pl Caspeee
     
     Options:
-        --para=5         parallel run for process phase.
-        --dry-run        dry-run.
-        --skip=restart   skip the task(csv).
-        --man            show manual
-        --config         config.yaml path
-        --shell          shell mode
+        --para=5                parallel run for process phase.
+        --dry-run               dry-run.
+        --skip=restart          skip the task(csv).
+        --with=somejob          do deploy with skip_defalt tasks.
+        --only=rsync            do only specify task (only affect on process phase).
+        --man                   show manual
+        [--log_level=debug]     change log level from option. If you specify this, 
+        --config                config.yaml path
+        --shell                 shell mode
 
 =head1 DESCRIPTION
 
