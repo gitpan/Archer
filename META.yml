@@ -3,12 +3,12 @@ abstract: 'yet another deployment tool'
 author:
   - 'Tokuhiro Matsuno and Archer comitters.'
 build_requires:
-  ExtUtils::MakeMaker: 6.42
+  ExtUtils::MakeMaker: 6.59
 configure_requires:
-  ExtUtils::MakeMaker: 6.42
+  ExtUtils::MakeMaker: 6.59
 distribution_type: module
 dynamic_config: 1
-generated_by: 'Module::Install version 1.03'
+generated_by: 'Module::Install version 1.06'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -31,7 +31,7 @@ requires:
   File::Util: 0
   FindBin: 0
   Getopt::Long: 0
-  IO::Prompt: 0
+  IO::Prompt::Simple: 0
   Kwalify: 0
   List::MoreUtils: 0
   Module::Build: 0
@@ -50,4 +50,4 @@ requires:
   perl: 5.8.1
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.08
+version: 0.09
