@@ -27,6 +27,7 @@ requires 'File::Util';
 requires 'IO::Prompt::Simple';
 requires 'Kwalify';
 requires 'File::HomeDir';
+requires 'File::ShareDir';
 
 features(
     'Plugin::Rsync' => [
@@ -45,6 +46,7 @@ features(
 
 author_tests 'xt';
 install_script('archer.pl');
+install_script('archer');
+install_share 'assets';
 
 WriteAll;
-

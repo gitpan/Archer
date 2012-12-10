@@ -16,6 +16,7 @@ meta-spec:
 name: Archer
 no_index:
   directory:
+    - assets
     - examples
     - inc
     - t
@@ -27,6 +28,7 @@ recommends:
 requires:
   Carp: 0
   File::HomeDir: 0
+  File::ShareDir: 0
   File::Spec: 0
   File::Util: 0
   FindBin: 0
@@ -50,4 +52,4 @@ requires:
   perl: 5.8.1
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.10
+version: 0.11
