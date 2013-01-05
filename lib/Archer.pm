@@ -7,7 +7,7 @@ use List::MoreUtils qw/uniq/;
 use Archer::ConfigLoader;
 use UNIVERSAL::require;
 
-our $VERSION = '0.12';
+our $VERSION = '0.13';
 
 my $context;
 sub context { $context }
@@ -64,12 +64,14 @@ sub run {
         $shell->run_loop;
     }
     elsif ( $self->{ write_config } ) {
+        # XXX: There is no Archer::Util!!!
         require Archer::Util;
         my $util = Archer::Util->new;
         $util->templatize( $self );
     }
     else {
         $self->run_hook( 'init' );
+        $self->run_hook( 'ready' );
 
         $self->run_process;
 
@@ -89,7 +91,7 @@ sub run_hook {
             next;
         }
 
-        if ( $hook eq 'process' && $self->{ only } ) {
+        if ( $hook =~ /^(?:process|ready)$/ && $self->{ only } ) {
             if ( $self->{only} ne $plugin->{ name } ) {
                 $self->log( debug => "skipped: $plugin->{name}" );
                 next;
@@ -169,7 +171,6 @@ sub bootstrap {
     return $self;
 }
 
-# TODO: use the Log::Dispatch?
 sub log {
     my ( $self, $level, $msg, %opt ) = @_;
 
