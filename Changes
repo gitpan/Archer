@@ -1,5 +1,9 @@
 Revision history for Archer
 
+0.15 2013-06-18T02:20:51Z
+    - fix dependencies
+    - fix tests for perl5.17 or higher
+
 0.14 2013-06-17T12:06:02Z
     - Switch to Minilla
     - Fixup dependencies

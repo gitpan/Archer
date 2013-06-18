@@ -1,5 +1,4 @@
 requires 'File::HomeDir';
-requires 'File::Rsync';
 requires 'File::ShareDir';
 requires 'File::Util';
 requires 'IO::Prompt::Simple';
@@ -15,6 +14,7 @@ requires 'UNIVERSAL::require';
 requires 'YAML';
 requires 'perl', '5.008001';
 
+recommends 'File::Rsync';
 recommends 'SVN::Agent';
 recommends 'MySQL::Diff';
 
@@ -25,5 +25,6 @@ on configure => sub {
 };
 
 on test => sub {
-    requires 'Test::More';
+    requires 'Test::More', "0.98";
+    requires 'IO::Scalar';
 };
