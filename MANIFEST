@@ -5,8 +5,6 @@ LICENSE
 META.json
 README.md
 TODO
-assets/kwalify/schema.yaml
-assets/recipe/Deploy
 bin/archer
 bin/archer.pl
 cpanfile
@@ -28,6 +26,8 @@ lib/Archer/Plugin/SVN/Diff.pm
 lib/Archer/Plugin/SVN/Log.pm
 lib/Archer/Plugin/SVN/Update.pm
 lib/Archer/Shell.pm
+share/assets/kwalify/schema.yaml
+share/assets/recipe/Deploy
 t/00.load.t
 t/01_simple.t
 t/01_simple.yaml

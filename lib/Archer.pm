@@ -7,7 +7,7 @@ use List::MoreUtils qw/uniq/;
 use Archer::ConfigLoader;
 use UNIVERSAL::require;
 
-our $VERSION = '0.15';
+our $VERSION = '0.16';
 
 my $context;
 sub context { $context }
@@ -65,8 +65,12 @@ sub run {
     }
     elsif ( $self->{ write_config } ) {
         # XXX: There is no Archer::Util!!!
-        require Archer::Util;
-        my $util = Archer::Util->new;
+        local $@;
+        my $archer_util = 'Archer::Util';
+        eval "require $archer_util;"; ## no critic
+        croak 'WTF! There is no Archer::Util! And that, Archer dist not contains it!' if $@;
+
+        my $util = $archer_util->new;
         $util->templatize( $self );
     }
     else {
